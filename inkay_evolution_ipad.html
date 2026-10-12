@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10182c">
+<title>マーイーカ進化チャレンジ</title>
+<style>
+:root{color-scheme:dark;--bg:#10182c;--panel:#1a2743;--cyan:#79e5f3;--pink:#ff8ccf;--gold:#ffe28a;--muted:#aab8d4}
+*{box-sizing:border-box}
+body{margin:0;min-height:100svh;background:radial-gradient(ellipse at 50% 0%,#263e66 0%,var(--bg) 65%);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f5f7ff;display:grid;place-items:center;padding:16px}
+main{width:min(100%,850px);border:2px solid #425b84;border-radius:22px;background:#111b31eF;box-shadow:0 20px 70px #0008;padding:clamp(16px,3vw,28px)}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.kicker{font-size:.78rem;letter-spacing:.15em;color:var(--cyan);font-weight:800}
+h1{font-size:clamp(1.35rem,4vw,2rem);margin:.25rem 0}
+.tag{border:1px solid #536d96;border-radius:99px;padding:6px 10px;color:var(--gold);font-size:.8rem}
+.layout{display:grid;grid-template-columns:minmax(180px, .9fr) minmax(250px,1.1fr);gap:18px;margin-top:20px}
+@media(max-width:580px){.layout{grid-template-columns:1fr}}
+.stage{min-height:290px;display:grid;place-items:center;position:relative;overflow:hidden;border-radius:18px;border:1px solid #354e77;background:radial-gradient(ellipse at center,#263f67,#131d34 72%)}
+.stars{position:absolute;inset:0;background-image:radial-gradient(#a8efff 1px,transparent 1.5px);background-size:31px 31px;opacity:.28}
+.creature{width:180px;max-width:70%;transition:transform .35s ease;filter:drop-shadow(0 12px 12px #0008);z-index:1}
+.creature.flip{transform:rotate(180deg)}
+.stage-label{position:absolute;bottom:15px;z-index:2;background:#0a1325c9;border:1px solid #4e668e;padding:7px 14px;border-radius:99px;font-weight:800}
+.panel{border:1px solid #354e77;border-radius:18px;padding:16px;background:#17243d}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0}
+.stat{font-size:.92rem;color:var(--muted)}
+.value{font-weight:800}
+.track{height:9px;border-radius:9px;background:#0b1222;overflow:hidden;margin:10px 0 15px}
+.track span{display:block;height:100%;width:72%;background:linear-gradient(90deg,var(--cyan),#a9ffcf);transition:width .3s}
+button{font:inherit;font-weight:750;border:1px solid #5d7da9;border-radius:12px;background:#263d62;color:#fff;padding:12px 14px;cursor:pointer;min-height:46px}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+button.primary{background:linear-gradient(135deg,#287f9a,#3d62a8);border-color:#83dced}
+button.gold{background:linear-gradient(135deg,#80622b,#b47b3d);border-color:#ffe28a;color:#fff8df}
+button:disabled{opacity:.45;cursor:not-allowed}
+.buttons{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+.buttons .wide{grid-column:1/-1}
+.status{border-left:3px solid var(--cyan);background:#0e182b;padding:12px;border-radius:0 10px 10px 0;min-height:68px;line-height:1.45;margin-top:14px}
+.sensor{font-size:.9rem;color:var(--muted);line-height:1.55}
+.sensor strong{color:#fff}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#68768d;margin-right:7px}
+.dot.on{background:#77f0ad;box-shadow:0 0 10px #77f0ad}
+.note{font-size:.78rem;color:#aab8d4;line-height:1.5;margin-top:15px}
+footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px;color:#8fa3c5;font-size:.75rem}
+</style>
+</head>
+<body>
+<main>
+<header><div><div class="kicker">EVOLUTION LAB / 001</div><h1>マーイーカ進化チャレンジ</h1></div><div class="tag">iPad 横向き対応</div></header>
+<div class="layout">
+<section class="stage" aria-label="キャラクター表示">
+<div class="stars"></div>
+<svg id="creature" class="creature" viewBox="0 0 220 220" role="img" aria-label="マーイーカ風のオリジナルイラスト">
+<defs><linearGradient id="body" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9ef7f3"/><stop offset=".55" stop-color="#36a9c9"/><stop offset="1" stop-color="#3154a5"/></linearGradient></defs>
+<path d="M75 130 Q35 170 22 147 Q12 130 42 116 L66 99 M145 130 Q185 170 198 147 Q208 130 178 116 L154 99 M84 151 Q52 191 72 194 Q93 195 102 163 M136 151 Q168 191 148 194 Q127 195 118 163" fill="none" stroke="#44c4dc" stroke-width="13" stroke-linecap="round"/>
+<path d="M110 28 C72 28 51 56 55 94 C58 123 82 146 110 153 C138 146 162 123 165 94 C169 56 148 28 110 28Z" fill="url(#body)" stroke="#b8ffff" stroke-width="3"/>
+<path d="M67 77 Q83 60 99 78 Q83 95 67 77Z M121 78 Q137 60 153 77 Q137 95 121 78Z" fill="#fff"/>
+<circle cx="84" cy="78" r="7" fill="#ff5dba"/><circle cx="136" cy="78" r="7" fill="#ff5dba"/>
+<path d="M98 107 Q110 116 122 107" fill="none" stroke="#15365c" stroke-width="4" stroke-linecap="round"/>
+<path d="M80 45 L65 24 L94 34 M140 45 L155 24 L126 34" fill="#3eb6d2" stroke="#b8ffff" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="110" cy="132" r="10" fill="#ffde79" stroke="#fff1b0" stroke-width="3"/>
+</svg>
+<div class="stage-label" id="nameLabel">マーイーカ</div>
+</section>
+<section class="panel">
+<div class="row"><span class="stat">なまえ</span><span class="value" id="nameStat">マーイーカ</span></div>
+<div class="row"><span class="stat">レベル</span><span class="value" id="levelStat">Lv. 29</span></div>
+<div class="track"><span id="xpBar"></span></div>
+<div class="row"><span class="stat">進化条件</span><span class="value">Lv. 30 + 逆さ向き</span></div>
+<div class="sensor"><div><span id="sensorDot" class="dot"></span><strong id="sensorState">センサー未接続</strong></div><div id="orientationText">センサーを許可すると向きを判定します。</div></div>
+<div class="buttons">
+<button id="sensorButton" class="primary wide">モーションセンサーを有効にする</button>
+<button id="levelButton" class="gold">レベルアップ！</button>
+<button id="resetButton">リセット</button>
+<button id="testFlipButton" class="wide">手動テスト：逆さ向きを切替</button>
+</div>
+<div class="status" id="message" aria-live="polite">センサーを有効にして、端末を横向きのまま上下逆さまにしてみよう。Lv.30になったとき逆さ向きなら進化！</div>
+</section>
+</div>
+<div class="note">※ センサー利用にはHTTPS接続とブラウザの許可が必要です。iPadの設定・ブラウザによってはセンサーが利用できない場合があります。そのときは「手動テスト」でも動作を確認できます。</div>
+<footer><span>ローカルHTMLデモ</span><span>端末の情報は送信しません</span></footer>
+</main>
+<script>
+(() => {
+let level = 29, inverted = false, evolved = false, sensorActive = false, manual = false;
+const $ = id => document.getElementById(id);
+function render(){
+  $('levelStat').textContent = 'Lv. ' + level;
+  $('xpBar').style.width = Math.min(100, level/30*100) + '%';
+  $('nameStat').textContent = evolved ? 'カラマネロ' : 'マーイーカ';
+  $('nameLabel').textContent = evolved ? 'カラマネロ！' : 'マーイーカ';
+  $('creature').classList.toggle('flip', inverted || evolved);
+  $('levelButton').disabled = evolved;
+  $('sensorDot').classList.toggle('on',sensorActive);
+  $('sensorState').textContent = sensorActive ? 'センサー接続中' : 'センサー未接続';
+}
+function evolveIfReady(){
+  if(level >= 30 && inverted && !evolved){
+    evolved = true;
+    $('message').textContent = 'おめでとう！ マーイーカはカラマネロに進化した！';
+    render();
+    return true;
+  }
+  return false;
+}
+function setInverted(value){
+  const changed = inverted !== value;
+  inverted = value;
+  $('orientationText').textContent = sensorActive
+    ? (inverted ? '逆さ向きを検知中！' : '通常の向きを検知中')
+    : (inverted ? '手動テスト：逆さ向き' : '手動テスト：通常の向き');
+  if(changed && level >= 30 && !evolved) evolveIfReady();
+  render();
+}
+$('levelButton').addEventListener('click',()=>{
+  if(evolved)return;
+  level = Math.min(100, level+1);
+  if(!evolveIfReady()){
+    $('message').textContent = level < 30
+      ? 'レベルが上がった！ あと1レベルで進化チャンス。'
+      : (inverted ? '逆さ向き！進化判定中…' : 'Lv.30になった！端末を上下逆さまにすると進化するよ。');
+  }
+  render();
+});
+$('testFlipButton').addEventListener('click',()=>{manual=true;setInverted(!inverted);if(!evolved)$('message').textContent=inverted?'手動テストで逆さ向きにしたよ。Lv.30なら進化！':'通常の向きに戻したよ。';});
+$('resetButton').addEventListener('click',()=>{level=29;inverted=false;evolved=false;manual=false;$('message').textContent='リセットしたよ。センサーを有効にして、Lv.30で逆さ向きを試そう。';render();});
+function handleOrientation(event){
+  if(typeof event.beta !== 'number' || typeof event.gamma !== 'number') return;
+  // In portrait, beta is the main top/bottom axis; in landscape, gamma commonly becomes the main axis.
+  const angle = (screen.orientation && typeof screen.orientation.angle === 'number') ? screen.orientation.angle : (window.orientation || 0);
+  let upside;
+  if(Math.abs(angle % 180) === 90) upside = Math.abs(event.gamma) > 145;
+  else upside = Math.abs(event.beta) > 145;
+  // Ignore readings close to the threshold to reduce accidental flips.
+  if(upside) setInverted(true);
+  else if(Math.abs(angle % 180) === 90 ? Math.abs(event.gamma) < 115 : Math.abs(event.beta) < 115) setInverted(false);
+}
+$('sensorButton').addEventListener('click', async ()=>{
+  try{
+    if(!('DeviceOrientationEvent' in window)){
+      $('message').textContent='このブラウザではモーションセンサーが利用できないようです。手動テストを使ってね。';return;
+    }
+    if(typeof DeviceOrientationEvent.requestPermission === 'function'){
+      const permission = await DeviceOrientationEvent.requestPermission();
+      if(permission !== 'granted'){
+        $('message').textContent='センサーの許可がありません。Safariの設定を確認するか、手動テストを使ってね。';return;
+      }
+    }
+    window.addEventListener('deviceorientation',handleOrientation,true);
+    sensorActive=true;
+    $('message').textContent='センサーを有効にしたよ。iPadを横向きに持ち、画面を見ながら端末を上下逆さまにしてみて！';
+    render();
+  }catch(err){
+    $('message').textContent='センサーを開始できませんでした。HTTPSで開いているか確認して、手動テストも試してね。';
+  }
+});
+render();
+})();
+</script>
+</body>
+</html>
